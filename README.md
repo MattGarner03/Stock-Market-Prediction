@@ -1,8 +1,9 @@
-# Quantitative Index Constituent Signals
+# Quantitative Investment (QI) Signals
 
 A **systematic mean‑reversion overlay** for index investing.
 Instead of Dollar Cost Averaging into the whole index, I buy the relative value inside the index at a stock elvel and trim the relatively expensive ones with rebalancing each day after US close.
 
+Horizon is approximately between 1 month and 2 years on average
 
 ---
 

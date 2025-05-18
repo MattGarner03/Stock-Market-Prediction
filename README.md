@@ -94,7 +94,7 @@ Diagnostics plots (`QI Output/plots/…png`) show the decomposition, slope and 
 
 ---
 
-## 6  Trade Workflow (PM view)
+## 6  Execution Workflow 
 
 1. **21:00**  CI pulls fresh prices → recomputes signals.
 2. **21:05**  Sheet updates; you review *Buys* and *Sells* larger than 0.2 units.

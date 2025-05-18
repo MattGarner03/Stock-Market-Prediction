@@ -104,8 +104,7 @@ Alternatively you could run the signals at 8:45-8:50 pm UK time and then buy/ se
 ---
 
 ## 7  Performance Caveats
-
-* Signals are **un‑smoothed**; expect turnover of ≈ 120 % p.a. on the S\&P 500 universe.
 * Transaction costs, slippage and borrow fees are *not* modelled in the notebooks – these must be applied downstream plus further portfolio optimiser must be used to prevent sector concentration. Work has been done to incorporate the information needed for industry/ sector level mapping. Right now the best POA is scheduling ChatGPT to run on the google sheet at 10pm and run the portfolio optimiser with a strict prompt to maintain sector neutrality. 
 * Some ADRs and dual‑listed names exhibit stale prints; data cleaning is ongoing, for example ASML here is the main killer as I want to trade the US listing but the signal runs with EU listing close. Future work to be done to remove the EU listing and run the signal on the US listing
+* As above: Sharpe Ratio and Annual Return calculations are overstated due to the tendancy of the strategy to increase exposure on the way down once a stock reaches -3Z --> -4Z. 
 

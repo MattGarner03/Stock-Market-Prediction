@@ -98,7 +98,8 @@ Diagnostics plots (`QI Output/plots/…png`) show the decomposition, slope and 
 
 1. **21:00**  CI pulls fresh prices → recomputes signals.
 2. **21:05**  Sheet updates; you review *Buys* and *Sells* larger than 0.2 units.
-3. **21:10**  Limit Orders Placed at something reasonable like yesterdays VWAP and limit sells placed at the reversion price target if they exhibit reversion behaviour. 
+3. **21:10**  Limit Orders Placed at something reasonable like yesterdays VWAP and limit sells placed at the reversion price target if they exhibit reversion behaviour.
+Alternatively you could run the signals at 8:45-8:50 pm UK time and then buy/ sell aggressively into the close once the signals are returned.
 
 ---
 

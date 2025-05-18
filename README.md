@@ -1,7 +1,8 @@
 # Quantitative Index Constituent Signals
 
 A **systematic mean‑reversion overlay** for index investing.
-Instead of buying the whole benchmark every month, we buy the *cheap* stocks inside the index and trim the *rich* ones — automatically, with auditable code and live signals.
+Instead of Dollar Cost Averaging into the whole index, I buy the relative value inside the index at a stock elvel and trim the relatively expensive ones with rebalancing each day after US close.
+
 
 ---
 
@@ -12,7 +13,7 @@ Instead of buying the whole benchmark every month, we buy the *cheap* stocks ins
 * **Indices covered**  S\&P 500, Russell 3000, STOXX 600 (easily extendable).
 * **Outputs**  Daily‑refreshed Google Sheet with trade instructions, plus per‑ticker diagnostics, back‑tests and performance attribution.
 
-> **Live dashboard** (updated by CI after the US close)
+> **Live Google Sheet** (updated by CI after the US close)
 > [https://docs.google.com/spreadsheets/d/10HWVyIMgBojLZaUFelmt9oTCO4Z6Oc\_cAVCD-3jb\_ss/edit?usp=sharing](https://docs.google.com/spreadsheets/d/10HWVyIMgBojLZaUFelmt9oTCO4Z6Oc_cAVCD-3jb_ss/edit?usp=sharing)
 
 ---
@@ -86,36 +87,24 @@ Place the following inside **Data/** (never commit these):
 | **Buy‑and‑Hold Annual Return** | CAGR if you had simply held the stock                          |
 | **Last Trade Signal**          | `Buy` / `Sell` with date & size                                |
 
-Diagnostics plots (`QI Output/plots/…png`) show the decomposition, slope and Z‑score timelines for audit.
+* Note: Strategy Sharpe Ratio and Strategy Annual Return Calculations are at the moment misleading as they account for buying incramentally with increasing size as Z falls from -2 --> -3 --> -4 and vice versa on the sells. Work to be done to improve the logistics
+* The other known issue is the obvious one of survivorship bias. This notebook aims to DCA efficiently into the S&P at a single stock level with the ability to go short the relatively expensive names and long the relatively cheap names, however once a name falls out of the s&p it falls out of the strategy so the simulation overstates profitability by ignoring names falling out of the index. Strategy decay attributed to this factor is a clear caveat to running this without any discretion in the decision making process.
+
+Diagnostics plots (`QI Output/plots/…png`) show the decomposition, slope and Z‑score timelines for debugging.
 
 ---
 
 ## 6  Trade Workflow (PM view)
 
-1. **06:30 ET**  CI pulls fresh prices → recomputes signals.
-2. **06:45 ET**  Sheet updates; you review *Buys* and *Sells* larger than 0.2 units.
-3. **09:00 ET**  Execution desk slices the orders via VWAP or adds to the ALGOs/DMA list.
-4. **T+1**  Positions feed back into performance and risk reports.
+1. **21:00**  CI pulls fresh prices → recomputes signals.
+2. **21:05**  Sheet updates; you review *Buys* and *Sells* larger than 0.2 units.
+3. **21:10**  Limit Orders Placed at something reasonable like yesterdays VWAP and limit sells placed at the reversion price target if they exhibit reversion behaviour. 
 
 ---
 
 ## 7  Performance Caveats
 
 * Signals are **un‑smoothed**; expect turnover of ≈ 120 % p.a. on the S\&P 500 universe.
-* Transaction costs, slippage and borrow fees are *not* modelled in the notebooks – these must be applied downstream.
-* Some ADRs and dual‑listed names exhibit stale prints; data cleaning is ongoing.
+* Transaction costs, slippage and borrow fees are *not* modelled in the notebooks – these must be applied downstream plus further portfolio optimiser must be used to prevent sector concentration. Work has been done to incorporate the information needed for industry/ sector level mapping. Right now the best POA is scheduling ChatGPT to run on the google sheet at 10pm and run the portfolio optimiser with a strict prompt to maintain sector neutrality. 
+* Some ADRs and dual‑listed names exhibit stale prints; data cleaning is ongoing, for example ASML here is the main killer as I want to trade the US listing but the signal runs with EU listing close. Future work to be done to remove the EU listing and run the signal on the US listing
 
----
-
-## 8  Extending / Customising
-
-* **Universe**  Replace `Data/*.csv` with your own constituents; notebooks detect columns automatically.
-* **Risk caps**  Edit `max_position` and `get_trend_strength()` to fit your risk budget.
-* **Execution style**  The Sheet can publish *parent* notional only, leaving the OMS to slice.
-
----
-
-## 9  License & Disclaimer
-
-MIT License.
-For research and educational use. No warranty of performance is expressed or implied; past results do not guarantee future returns. Use of the signals in live trading is at your own risk.
